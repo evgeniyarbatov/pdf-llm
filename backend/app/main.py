@@ -31,8 +31,6 @@ db_client = chromadb.HttpClient(
    host=os.environ.get('DB_HOST', 'localhost')
 )
 
-print('OLLAMA_BASE_URL', os.environ.get('OLLAMA_BASE_URL', 'http://localhost:11434'))
-
 llm = Ollama(
     base_url=os.environ.get('OLLAMA_BASE_URL', 'http://localhost:11434'),
     model="llama3",
