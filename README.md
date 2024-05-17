@@ -14,7 +14,7 @@ Start local server in LMStudio.
 Start ChromaDB / backend / frontend:
 
 ```
-docker compose up 
+docker-compose up --build
 ```
 
 Seed PDFs into ChromaDB:

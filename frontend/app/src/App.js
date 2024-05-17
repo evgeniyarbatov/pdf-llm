@@ -17,7 +17,7 @@ function App() {
       const res = await axios.post("http://localhost:9000/query", {
         question: question,
       });
-      setResponse(res.data.response);
+      setResponse(res.data.result);
     } catch (error) {
       console.error("Error querying the LLM:", error);
       setResponse("There was an error querying the LLM.");
