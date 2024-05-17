@@ -4,12 +4,15 @@ Allow users to query LLM with context from PDFs.
 
 ## Setup
 
-- Install LMStudio 
-- Download `Llama 3 - 8B Instruct` model
+- Install ollama
 
 ## How to run
 
-Start local server in LMStudio.
+Start ollama:
+
+```
+ollama run llama3
+```
 
 Start ChromaDB / backend / frontend:
 
