@@ -4,23 +4,17 @@ Allow users to query LLM with context from PDFs.
 
 ## Setup
 
-- Install ollama
+- Install Docker Desktop
 
 ## How to run
 
-Start ollama:
-
-```
-ollama run llama3
-```
-
-Start ChromaDB / backend / frontend:
+Start ollama / db / backend / frontend:
 
 ```
 docker-compose up --build
 ```
 
-Seed PDFs into ChromaDB:
+Seed PDFs into db:
 
 - place PDFs into 'documents' directory
 - run: `make`

@@ -1,4 +1,21 @@
 services:
+  ollama:
+    build:
+      context: ./ollama
+      dockerfile: Dockerfile
+    container_name: ollama
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - default
+    healthcheck:
+      test: "bash -c 'cat < /dev/null > /dev/tcp/localhost/11434'"
+      interval: 30s
+      timeout: 10s
+      retries: 3
   db:
     image: chromadb/chroma
     container_name: "llm-db"
@@ -24,6 +41,7 @@ services:
     container_name: "llm-backend"
     environment:
       - DB_HOST=db
+      - OLLAMA_BASE_URL=http://ollama:11434
     ports:
       - 9000:9000
     networks:
@@ -37,6 +55,8 @@ services:
       start_period: 5s
     depends_on:
       db:
+        condition: service_healthy
+      ollama:
         condition: service_healthy
   frontend:
     build:
@@ -59,3 +79,4 @@ networks:
 volumes:
   chroma-data:
     driver: local
+  ollama:
