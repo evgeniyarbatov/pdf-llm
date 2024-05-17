@@ -1,0 +1,59 @@
+services:
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: "llm-db"
+    volumes:
+      - chroma-data:/chroma/chroma
+      - ./pdfs:documents
+    ports:
+      - 8000:8000
+    networks:
+      - default
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "-c", "cat < /dev/null > /dev/tcp/localhost/8001" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: "llm-backend"
+    ports:
+      - 9000:9000
+    networks:
+      - default
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: "llm-frontend"
+    ports:
+      - 80:80
+    networks:
+      - default
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  chroma-data:
+    driver: local
