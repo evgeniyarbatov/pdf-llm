@@ -1,4 +1,3 @@
 chromadb 
 langchain 
 pypdf
-langchain-chroma

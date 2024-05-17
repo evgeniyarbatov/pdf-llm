@@ -1,20 +1,9 @@
-# Chroma DB
+# DB
 
-Init:
+Seed DB with PDF files from `documents`.
 
-```
-python3.12 -m venv ~/.venv/pdf-llm
-source ~/.venv/pdf-llm/bin/activate
-```
-
-Install deps:
+## Run
 
 ```
-pip install -r requirements.txt
-```
-
-Run:
-
-```
-python init-db.py ../documents
+python seed.py ../documents
 ```

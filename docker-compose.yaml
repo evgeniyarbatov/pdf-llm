@@ -7,7 +7,6 @@ services:
       - ALLOW_RESET=TRUE
     volumes:
       - chroma-data:/chroma/chroma
-    command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config chromadb/log_config.yml --timeout-keep-alive 30"
     ports:
       - 8000:8000
     networks:
@@ -18,38 +17,40 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   container_name: "llm-backend"
-  #   ports:
-  #     - 9000:9000
-  #   networks:
-  #     - default
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "curl -f http://localhost:9000/ || exit 1"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 5s
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: "llm-frontend"
-  #   ports:
-  #     - 80:80
-  #   networks:
-  #     - default
-  #   restart: unless-stopped
-  #   depends_on:
-  #     backend:
-  #       condition: service_healthy
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: "llm-backend"
+    environment:
+      - DB_HOST=db
+    ports:
+      - 9000:9000
+    networks:
+      - default
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/healthcheck || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: "llm-frontend"
+    ports:
+      - 80:80
+    networks:
+      - default
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
 
 networks:
   default:

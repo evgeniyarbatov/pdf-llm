@@ -1,6 +1,5 @@
 fastapi
-uvicorn[standard]
-langchain-chroma
-sentence_transformers
+pydantic
 chromadb
-langchain_community
+langchain 
+langchain_chroma
