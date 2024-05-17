@@ -3,3 +3,4 @@ pydantic
 chromadb
 langchain 
 langchain_chroma
+sentence_transformers

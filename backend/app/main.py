@@ -8,6 +8,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
 from langchain_chroma import Chroma
+from langchain_community.embeddings.sentence_transformer import (
+    SentenceTransformerEmbeddings,
+)
 
 app = FastAPI()
 
@@ -40,9 +43,13 @@ def health_check():
 
 @app.post("/query")
 async def query_llm(query: Query):
+  embedding_function = SentenceTransformerEmbeddings(
+    model_name="all-MiniLM-L6-v2"
+  )
   db = Chroma(
       client=client,
       collection_name="pdfs",
+       embedding_function=embedding_function,
   )
   docs = db.similarity_search(
      query.question
