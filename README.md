@@ -31,6 +31,10 @@ Open browser on http://localhost and enter queries.
 Enter queries like:
 
 - `Tell me about Ace Decade Holdings`
-- `Who is Mr. Kwok`
 
 This runs very slow but it seems to work 
+
+## UI
+
+![screencapture-localhost-2024-05-17-17_30_26](https://github.com/evgeniyarbatov/pdf-llm/assets/1913350/125ffa78-1e78-46a9-9be5-cbe6be69ff78)
+
